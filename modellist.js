@@ -1,8 +1,7 @@
 // link from kicad .pretty and model
-// link from kicad .pretty and model
 getmodel= function()
 {
-"BatteryHolder_Bulgin_BX0036_1xC","Battery"	,	
+var xref	=	["BatteryHolder_Bulgin_BX0036_1xC","Battery"	,	
 "BatteryHolder_Keystone_103_1x20mm","Battery"	,	
 "BatteryHolder_Keystone_1042_1x18650","Battery"	,	
 "BatteryHolder_Keystone_104_1x23mm","Battery"	,	
@@ -9719,8 +9718,7 @@ getmodel= function()
 "RV_Disc_D9mm_W5.2mm_P5mm","Varistor"	,	
 "RV_Disc_D9mm_W5.4mm_P5mm","Varistor"	,	
 "RV_Disc_D9mm_W5.5mm_P5mm","Varistor"	,	
-"RV_Disc_D9mm_W5.7mm_P5mm","Varistor"		
-]	;
+"RV_Disc_D9mm_W5.7mm_P5mm","Varistor"	]	;
 return xref;
 }	
 	
