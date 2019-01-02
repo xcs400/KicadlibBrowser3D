@@ -725,7 +725,7 @@ function DrawFootprints( scene, midx, midy, transp)
                     penwidth =  Number(GetTokenDim(section, true));
 				
 
-				console.log("print fp_line: x:" + x1 + " y:"+ y1 + " to   x:" + x2 + " y:" + y2 +" width",penwidth);        //       penwidth *= Scale;
+		//		console.log("print fp_line: x:" + x1 + " y:"+ y1 + " to   x:" + x2 + " y:" + y2 +" width",penwidth);        //       penwidth *= Scale;
 			
 					
 				//	drawpad =function ( scene, padshape, padx , pady , padwidth ,padheight, drillwidth , rounded )
@@ -779,7 +779,7 @@ function DrawFootprints( scene, midx, midy, transp)
                 if (section[0].length > 0)
                     penwidth = Number(GetTokenDim(section, true));
          //       penwidth = Scale;
-				console.log("print circle");
+	//			console.log("print circle");
          //       if (penwidth < DEFAULTPEN)
          //           penwidth = DEFAULTPEN;
             //    pen.SetWidth(penwidth);
@@ -836,7 +836,7 @@ function DrawFootprints( scene, midx, midy, transp)
                     penwidth = DEFAULTPEN;
                 pen.SetWidth(penwidth);
          //       gc->SetPen(pen);
-		 	console.log("print arc");
+	//	 	console.log("print arc");
                 dx -= x;
                 dy -= y;
           //      var radius = sqrt(dx * dx + dy * dy);
@@ -918,7 +918,7 @@ function DrawFootprints( scene, midx, midy, transp)
                                 penwidth = Number(GetTokenDim(subsect, true));
                         }
                     }
-						console.log("print fp_text at x:" +x +" y:"+y + " thick:" +penwidth+ " chaine:"+ token+ " cx:" + cx + " cy:"+ cy  +" rrot"+rot);
+	//					console.log("print fp_text at x:" +x +" y:"+y + " thick:" +penwidth+ " chaine:"+ token+ " cx:" + cx + " cy:"+ cy  +" rrot"+rot);
                  //   penwidth *= Scale;
                  //   if (penwidth < DEFAULTPEN)
                  //       penwidth = DEFAULTPEN;
