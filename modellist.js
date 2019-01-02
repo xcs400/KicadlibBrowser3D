@@ -1,6 +1,7 @@
 // link from kicad .pretty and model
-getmodel function=()
-var xref	=	[
+// link from kicad .pretty and model
+getmodel= function()
+{
 "BatteryHolder_Bulgin_BX0036_1xC","Battery"	,	
 "BatteryHolder_Keystone_103_1x20mm","Battery"	,	
 "BatteryHolder_Keystone_1042_1x18650","Battery"	,	
