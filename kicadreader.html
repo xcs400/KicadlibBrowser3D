@@ -1,8 +1,7 @@
-
-<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<LINK REL="SHORTCUT ICON"" href= "./favicon.ico" >
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
 			body {
@@ -36,7 +35,7 @@
 		</div>
 	
 		
-		<script src="./threejs/build/three.js"></script>
+		<script src="./threejs/build/three.min.js"></script>
 		<script src="./threejs/examples/js/controls/OrbitControls.js"></script>
 
 		<script src="./threejs/examples/js/WebGL.js"></script>
@@ -82,8 +81,9 @@ font={"glyphs":{"ợ":{"x_min":44,"x_max":818,"ha":817,"o":"m 514 298 q 502 400 
 
 
 
-usecase="d"
-
+var usecase="d"
+var DEFAULTPEN=0.01
+var Scale =1.5;
 
 NormalizeAngle= function(para)
 {
@@ -195,7 +195,7 @@ DrawStrokeText= function(color, scene,x  , y  , cx, token)
 	if (padshape=="oval"  ||  padshape=="circle" )
 	{				
 			var extrudeSettings = {
-			amount: 0.01,
+			depth: 0.01,
 			bevelEnabled: false,
 			curveSegments: 100
 		};
@@ -576,8 +576,8 @@ function DrawFootprints( scene, midx, midy, transp)
                 points[1].m_x = x2 * Scale + midx;
                 points[1].m_y = y2 * Scale + midy;
        //         gc->DrawLines(2, points);
-                bbox=UpdateBoundingBox(bbox, x1, y1);
-                bbox=UpdateBoundingBox(bbox, x2, y2);
+            //    bbox=UpdateBoundingBox(bbox, x1, y1);
+          //      bbox=UpdateBoundingBox(bbox, x2, y2);
             } else if (token.localeCompare("DC")==0) {
                 var x = GetTokenDim(line, unit_mm);
                 var y = GetTokenDim(line, unit_mm);
@@ -595,7 +595,7 @@ function DrawFootprints( scene, midx, midy, transp)
         //        var radius = sqrt(dx * dx + dy * dy);
          //       gc->DrawEllipse((x - radius) * Scale + midx, (y - radius) * Scale + midy,
           //                      2 * radius * Scale, 2 * radius * Scale);
-                bbox=UpdateBoundingBox(bbox, x - radius, y - radius, 2 * radius, 2 * radius);
+         //       bbox=UpdateBoundingBox(bbox, x - radius, y - radius, 2 * radius, 2 * radius);
             } else if (token.localeCompare("DA")==0) {
                 var x = GetTokenDim(line, unit_mm);
                 var y = GetTokenDim(line, unit_mm);
@@ -613,15 +613,15 @@ function DrawFootprints( scene, midx, midy, transp)
                 dy -= y;
                 var radius = sqrt(dx * dx + dy * dy);
                 var startangle = atan2(dy, dx);
-                var endangle = startangle +angle * M_PI / 180.0;
-                if (endangle > 2 * M_PI)
-                    endangle -= 2 * M_PI;
+                var endangle = startangle +angle * Math.PI / 180.0;
+                if (endangle > 2 * Math.PI)
+                    endangle -= 2 * Math.PI;
        //         wxGraphicsPath path = gc->CreatePath();
        //         path.AddArc(x * Scale + midx, y * Scale + midy, radius * Scale, startangle, endangle, true);
        //         gc->DrawPath(path);
                 /* for the bounding box, assume that the arc is a circle (the
                    bounding box does not need to be exact) */
-                bbox=UpdateBoundingBox(bbox, x - radius, y - radius, 2 * radius, 2 * radius);
+       //         bbox=UpdateBoundingBox(bbox, x - radius, y - radius, 2 * radius, 2 * radius);
             } else if (token.localeCompare("DP")==0) {
                 GetToken(line);    /* ignore first four unknown values */
                 GetToken(line);
@@ -834,7 +834,7 @@ function DrawFootprints( scene, midx, midy, transp)
              //   penwidth *= Scale;
                 if (penwidth < DEFAULTPEN)
                     penwidth = DEFAULTPEN;
-                pen.SetWidth(penwidth);
+          //      pen.SetWidth(penwidth);
          //       gc->SetPen(pen);
 	//	 	console.log("print arc");
                 dx -= x;
@@ -842,14 +842,14 @@ function DrawFootprints( scene, midx, midy, transp)
           //      var radius = sqrt(dx * dx + dy * dy);
           //      var startangle = atan2(dy, dx);
           //      var endangle = startangle + (var)angle * M_PI / 180.0;
-                if (endangle > 2 * M_PI)
-                    endangle -= 2 * M_PI;
+                if (endangle > 2 * Math.PI)
+                    endangle -= 2 * Math.PI;
          //       wxGraphicsPath path = gc->CreatePath();
          //       path.AddArc(x * Scale + midx, y * Scale + midy, radius * Scale, startangle, endangle, true);
          //       gc->DrawPath(path);
                 /* for the bounding box, assume that the arc is a circle (the
                    bounding box does not need to be exact) */
-                bbox=UpdateBoundingBox(bbox, x - radius, y - radius, 2 * radius, 2 * radius);
+         //       bbox=UpdateBoundingBox(bbox, x - radius, y - radius, 2 * radius, 2 * radius);
             } else if (token== "(fp_poly") {
                 var penwidth = 0;
                 var section = new Array(1)
@@ -883,7 +883,7 @@ function DrawFootprints( scene, midx, midy, transp)
                     var y = GetTokenDim(section, true);
                     pt[p].m_x = x * Scale + midx;
                     pt[p].m_y = y * Scale + midy;
-                    bbox=UpdateBoundingBox(bbox, x, y);
+          //          bbox=UpdateBoundingBox(bbox, x, y);
                 }
    //             gc->DrawLines(count, pt);
    //             gc->SetBrush(*wxTRANSPARENT_BRUSH);
