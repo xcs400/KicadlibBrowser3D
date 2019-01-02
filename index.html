@@ -1,8 +1,9 @@
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
+	<head> 
 		<meta charset="utf-8">
+		<LINK REL="SHORTCUT ICON"" href= "./favicon.ico" >
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
 			body {
@@ -12,6 +13,10 @@
 				margin: 0px;
 			
 			}
+			a:link { color: blue; }  
+			a:hover { background: yellow; } 
+		        
+
 			#info {
 				color: #fff;
 				position: absolute;
@@ -21,12 +26,7 @@
 				z-index: 100;
 				display:block;
 			}
-			#info a, .button {
-				color: #f00;
-				font-weight: bold;
-				text-decoration: underline;
-				cursor: pointer
-			}
+	
 			#list{
   
     height: 75em;
@@ -53,10 +53,10 @@
 <script>
   
 function runMyFunction(usecase,boitier) {
-       vrvh='<iframe src="wrmlviewver.html?usecase='+usecase + '&name='+boitier  +'&path=" style="width:500px;height:500px;border:1px solid #000000;z-index:1; " />';
+       vrvh='<iframe src="wrmlviewver.html?usecase='+usecase + '&name='+boitier  +'&path=" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
        $("#wrml").html(vrvh);
            
-        vrvh='<iframe src="kicadreader.html?usecase='+usecase + '&name='+boitier  +'&path=" style="width:500px;height:500px;border:1px solid #000000;z-index:1; " />';
+        vrvh='<iframe src="kicadreader.html?usecase='+usecase + '&name='+boitier  +'&path=" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
         $("#kicad").html(vrvh);
  
 }
@@ -70,10 +70,10 @@ xref=getmodel();
 for (ind =0 ; ind < xref.length; ind+=2)
 {
 
-ulst ="<a href=\"#Foo\" ";
+ulst ="<div><a href=\"#Foo\" ";
 ulst+="onclick=\"return runMyFunction('";
 ulst+=  xref[ind+1] + "','" +  xref[ind] + "');\">" ;
-ulst+=  xref[ind] + " __(" + xref[ind+1] + ") </a>"  ;
+ulst+=  xref[ind] + "</a> &ensp;&ensp;&ensp;" + xref[ind+1] + "</div>" ;
 //	console.log(lst);
 	
 lst=lst+ "<br>"+	ulst;
