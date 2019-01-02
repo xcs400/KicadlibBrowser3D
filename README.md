@@ -1,7 +1,7 @@
 # KicadlibBrowser3D
 Online kicad lib browser for footprints and 3D models.
 
-Could be tested here : https://xcs400.github.io/KicadlibBrowser3D/
+Can be tested here : https://xcs400.github.io/KicadlibBrowser3D/
 
 The models and footprint are rendered using threejs.  
 
