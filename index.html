@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #FFF;
+				color: #0;
+				margin: 0px;
+			
+			}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
+			}
+			#info a, .button {
+				color: #f00;
+				font-weight: bold;
+				text-decoration: underline;
+				cursor: pointer
+			}
+			#list{
+  
+    height: 75em;
+    padding: 1em;
+    margin: auto;
+    border: 0.062em solid #999;
+    background-color: #fff;
+    overflow: auto;
+    direction: rtl;
+    text-align: left;
+}
+
+		</style>
+</head>
+
+<body>
+ 
+		<div id="info">		<a href="" target="_blank" rel="noopener"></a>		</div>
+   
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	   <script type='text/javascript' src='./modellist.js'  charset="utf-8" ></script>
+	
+    
+<script>
+  
+function runMyFunction(usecase,boitier) {
+       vrvh='<iframe src="wrmlviewver.html?usecase='+usecase + '&name='+boitier  +'&path=" style="width:500px;height:500px;border:1px solid #000000;z-index:1; " />';
+       $("#wrml").html(vrvh);
+           
+        vrvh='<iframe src="kicadreader.html?usecase='+usecase + '&name='+boitier  +'&path=" style="width:500px;height:500px;border:1px solid #000000;z-index:1; " />';
+        $("#kicad").html(vrvh);
+ 
+}
+
+$(document).ready(function(){
+
+runMyFunction("Capacitor_SMD","CP_Elec_10x10");
+
+lst=""
+xref=getmodel();
+for (ind =0 ; ind < xref.length; ind+=2)
+{
+
+ulst ="<a href=\"#Foo\" ";
+ulst+="onclick=\"return runMyFunction('";
+ulst+=  xref[ind+1] + "','" +  xref[ind] + "');\">" ;
+ulst+=  xref[ind] + " __(" + xref[ind+1] + ") </a>"  ;
+//	console.log(lst);
+	
+lst=lst+ "<br>"+	ulst;
+}
+$("#list").html(lst);
+
+
+
+
+// fin ready
+}); 
+    
+	
+		</script>
+
+
+  <table align="left" >
+      <tr>
+	  
+           <td>       <table  <table align="top" >
+						 <tr><div id="wrml"></div>  </tr>
+						 <tr><div id="kicad"></div> </tr>
+						 </table>
+		   </td>
+		    <td>
+						<div id="list"></div>			
+	       </td>
+		
+	 </tr>
+	
+           </table>
+	
+  
+ 
+	</body>
+</html>
