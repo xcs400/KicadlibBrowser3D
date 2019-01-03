@@ -1229,8 +1229,15 @@ function parse_query_string(query) {
 				
 				
 				 if  (qs.path=="")
-					qs.path='https://raw.githubusercontent.com/KiCad/kicad-footprints/master/' +qs.usecase + '.pretty/'+ qs.name +'.kicad_mod';
-				  else
+				 {
+				 	 if  (qs.UseURLpretty=="")
+						qs.path='https://raw.githubusercontent.com/KiCad/kicad-footprints/master/' +qs.usecase + '.pretty/'+ qs.name +'.kicad_mod';
+					else 
+					//like https://raw.githubusercontent.com/peekpt/kicad_smisioto/master/modules/walter/  w_conn_d-sub  .pretty /DB_100F.kicad_mod
+					    qs.path= qs.UseURLpretty +qs.usecase +  '.pretty/'+  qs.name +'.kicad_mod';
+
+				}
+				 else
 					 qs.usecase="a";
 				
 				
