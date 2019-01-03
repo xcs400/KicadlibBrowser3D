@@ -6,13 +6,13 @@ This is an unfinished work but it can be tested here: https://xcs400.github.io/K
 My goal is being able to see the Kicad(V5) footprint and 3D models available on the web (mainly from kicad official lib) but also from others sites without installing any tool. 
 
 todo:
-*fix bugs (mainly in the .kicad_mod parser)
 
-*generate a dynamic list from the official .pretty folder and from others sites (here it is static from modellist.js)
+  -fix bugs (mainly in the .kicad_mod parser)
 
-*setup a better browser
+  -generate a dynamic list from the official .pretty folder and from others sites (here it is static from modellist.js)
 
-...
+  -setup a better browser
+
  
  
 credit: 
