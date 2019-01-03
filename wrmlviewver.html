@@ -140,11 +140,18 @@ function parse_query_string(query) {
 		
 				console.log(qs);
 				
-				
+			
+
 				
 				 if  (qs.path=="")
-					qs.path='https://raw.githubusercontent.com/KiCad/kicad-packages3D/master/' +qs.usecase + '.3dshapes/'+ qs.name +'.wrl';
-				  else
+					{
+					 if  (qs.UseURL3D=="")
+						qs.path='https://raw.githubusercontent.com/KiCad/kicad-packages3D/master/' +qs.usecase + '.3dshapes/'+ qs.name +'.wrl';
+					 else 
+//                   https://raw.githubusercontent.com/peekpt/kicad_smisioto/master/packages3d/walter/  conn_av  /  jack_3.5_pj313d-smt .wrl
+					    qs.path= qs.UseURL3D +qs.usecase + '/'+ qs.name +'.wrl';
+					}
+				else
 					 qs.usecase="a";
 				
 				
