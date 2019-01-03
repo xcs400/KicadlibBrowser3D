@@ -52,27 +52,42 @@
     
 <script>
   
-function runMyFunction(usecase,boitier) {
-       vrvh='<iframe src="wrmlviewver.html?usecase='+usecase + '&name='+boitier  +'&path=" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
+function runMyFunction(usecase,boitier, UseURL3D, UseURLpretty) {
+       vrvh='<iframe src="wrmlviewver.html?usecase='+usecase + '&name='+boitier + '&UseURL3D='+ UseURL3D   + '&UseURLpretty='+ UseURLpretty  +  '&path=" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
        $("#wrml").html(vrvh);
            
-        vrvh='<iframe src="kicadreader.html?usecase='+usecase + '&name='+boitier  +'&path=" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
+        vrvh='<iframe src="kicadreader.html?usecase='+usecase + '&name='+boitier  + '&UseURL3D='+ UseURL3D  + '&UseURLpretty='+ UseURLpretty  + '&path=" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
         $("#kicad").html(vrvh);
  
 }
 
 $(document).ready(function(){
 
-runMyFunction("Capacitor_SMD","CP_Elec_10x10");
+runMyFunction("Capacitor_SMD","CP_Elec_10x10","","");   // kicad lib path by default
+
+UseURL3D=""
+UseURLpretty=""
+
 
 lst=""
 xref=getmodel();
 for (ind =0 ; ind < xref.length; ind+=2)
 {
+if  (xref[ind] == "UseURL3D" )
+	{UseURL3D=xref[ind+1]
+	lst=lst+ "<br><b>UseURL3D AT :" + UseURL3D + "</b><br> ";
+	continue;
+	}
+	
+if  (xref[ind] == "UseURLpretty" )
+	{UseURLpretty=xref[ind+1]
+	lst=lst+ "<br><b>UseURLpretty AT :" + UseURLpretty + "</b><br> ";
+	continue;
+	}
 
 ulst ="<div><a href=\"#Foo\" ";
 ulst+="onclick=\"return runMyFunction('";
-ulst+=  xref[ind+1] + "','" +  xref[ind] + "');\">" ;
+ulst+=  xref[ind+1] + "','" +  xref[ind] + "','"  + UseURL3D  + "','"   + UseURLpretty +  "');\">" ;
 ulst+=  xref[ind] + "</a> &ensp;&ensp;&ensp;" + xref[ind+1] + "</div>" ;
 //	console.log(lst);
 	
