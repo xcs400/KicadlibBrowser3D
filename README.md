@@ -15,7 +15,7 @@ My goal is being able to see the Kicad(V5) footprint and 3D models available on 
 
  
  
-# credit 
+# credits 
 The Vrml models and footprints are rendered using threejs/webgl : https://threejs.org/ 
 
 The Vrml parser is from https://github.com/bartmcleod/VrmlParser based on Peg.js
