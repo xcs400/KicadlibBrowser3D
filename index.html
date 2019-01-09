@@ -52,127 +52,184 @@
     
 <script>
   
-var  xref
-  
-function M(nb) {
+var  xref,xindex
+var flag_only3D=1 
+var sortbyname=1 
 
- wr=  "https://raw.githubusercontent.com/"+ xref[nb].w +  xref[nb].n + ".wrl"
- 
- md=  "https://raw.githubusercontent.com/" + xref[nb].p +  xref[nb].n + ".kicad_mod"
- 
-       vrvh='<iframe src="wrmlviewver.html?path='+ wr + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
-       $("#wrml").html(vrvh);
-           
-        vrvh='<iframe src="kicadreader.html?path='+ md  + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
-        $("#kicad").html(vrvh);
- 
+
+  
+ function sort_path(a, b){
+    var nameA=String(a.p), nameB=String(b.p)
+    if (nameA === nameB) {
+        return 0;
+    }
+    else {
+        return (nameA < nameB) ? -1 : 1;
+    }
+	
+}
+	
+function sort_name(a, b){
+    var nameA=String(a.n), nameB=String(b.n)
+    if (nameA === nameB) {
+        return 0;
+    }
+    else {
+        return (nameA < nameB) ? -1 : 1;
+    }
+	
 }
 
-$(document).ready(function(){
+
+function fillpath()
+{
+
+for (ind =0 ; ind < xref.length; ind++)
+	{
+	if (xref[ind].p  )  
+		xref[ind].p= xindex[xref[ind].p]
+		
+	if (xref[ind].w  )  
+		xref[ind].w= xindex[xref[ind].w]
+
+	if (xref[ind].s  )  
+		xref[ind].s= xindex[xref[ind].s]		
+		
+	if (xref[ind].S  )  
+		xref[ind].S= xindex[xref[ind].S]		
+		
+	if (xref[ind].g  )  
+		xref[ind].g= xindex[xref[ind].g]		
+
+	}
+
+} 
 
 
-UseURL3D=""
-UseURLpretty=""
 
 
-lst=""
-xref=getmodel();
-
+function  genere_list() 
+{ 
 var curpath="lkjljmj"
 var curpathwrl="dhgdfghdhgfd"
 var curpathstep="dhgdfghdhgfd"
 var curpathstp="dhgdfghdhgfd"
 var curpathwings="dhgdfghdhgfd"
-
+var iddef=0
+var lst=""
 for (ind =0 ; ind < xref.length; ind++)
-{
+	{
+	wr=""
 
-if (curpath != xref[ind].p  &&  xref[ind].p!="" )  
-	curpath= xref[ind].p
+	if  (xref[ind].w )
+		{wr= "<b>(Wrl)</b>"
+		if (iddef==0)
+			iddef=ind
+		}
+	else
+		{
+		if (flag_only3D)
+			continue
+		}
 
-if (curpathwrl != xref[ind].w  &&  xref[ind].w!="" )  
-	curpathwrl= xref[ind].w
+	 
+	if  (xref[ind].s )
+	wr= wr+ " Stp"
 
+	if  (xref[ind].S )
+	wr= wr+ "<b>(Step)</b>"
 
+	if  (xref[ind].g )
+	wr= wr+ " Wings"
 
+	if (! xref[ind].p )
+	 console.log("erreur p")
 	
-	xref[ind].p = curpath
-	xref[ind].w = curpathwrl
-	
- 
-	/*	   var onerow={p:table2[a].path, n:table2[a].shortname }
-		   if (table2[a].haswrl)
-			   onerow.w=table2[a].haswrl
-		   
-		   if (table2[a].hasstep)
-			   onerow.S=table2[a].hasstep
-		   
-		   if (table2[a].hasstp)
-			   onerow.s=table2[a].hasstp
-		   
-		   if (table2[a].haswings)
-			   onerow.g=table2[a].haswings
-			   */
-	   
-		   
+	wr=xref[ind].p.substring(0, xref[ind].p.indexOf("/"))+ ":"  +wr + ":"  
+	md=  xref[ind].p +  xref[ind].n + ".kicad_mod"
+	 
+	ulst ="<tr><td><a href=\"#Foo\" " + "onclick=\"M('"  + ind +   "');\">" +  xref[ind].n   + "</a></td>" + "<td>&nbsp;&nbsp;&nbsp;&nbsp;" +  wr   + "</td><tr>" ;
+	lst=lst+ulst
 
-
-//for (ind =0 ; ind < xref.length; ind+=2)
-//{
-//if  (xref[ind] == "UseURL3D" )
-//	{UseURL3D=xref[ind+1]
-//	lst=lst+ "<br><b>UseURL3D AT :" + UseURL3D + "</b><br> ";
-//	continue;
-//	}
-	
-//if  (xref[ind] == "UseURLpretty" )
-//	{UseURLpretty=xref[ind+1]
-//	lst=lst+ "<br><b>UseURLpretty AT :" + UseURLpretty + "</b><br> ";
-//	continue;
-//	}
-
-wr=""
-if  (xref[ind].w )
-wr= "3D"
-else
-continue
- 
-if  (xref[ind].s )
-wr= wr+ " Stp"
-
-if  (xref[ind].S )
-wr= wr+ " Step"
-
-if  (xref[ind].g )
-wr= wr+ " Wings"
-
- wr=xref[ind].p.substring(0, xref[ind].p.indexOf("/"))+ ":"  +wr + ":"  
- 
- md=  xref[ind].p +  xref[ind].n + ".kicad_mod"
- 
-
- //<a href="accueil.php"  onClick="changecolor();">yop</a>
- 
-ulst ="<tr><td><a href=\"#Foo\" ";
-ulst+="onclick=\"M('";
-ulst+=  ind +   "');\">" ;
-ulst+=  xref[ind].n   + "</a></td>" ;
-//	console.log(lst);
-ulst+="<td>&nbsp;&nbsp;&nbsp;&nbsp;"+  wr   + "</td><tr>" ;
-
-lst=lst+ulst
-
-
-//if (ind>1000) 
-//break;
-
-}
+	}
 $("#list").html(lst);
 
+return iddef;
+} 
+  
+  
+function msort_name()
+{
+$("#list").html("<b>index error<b>");
 
-M(476)  // cp par defaut
+xref.sort(	sort_name);
+genere_list()
+sortbyname=1
+}
+function msort_path()
+{
+$("#list").html("<b>index error<b>");
 
-// fin ready
+xref.sort(	sort_path);
+genere_list()
+sortbyname=0
+}
+
+
+
+function  mtogle3D()
+{
+if (flag_only3D==1)
+	flag_only3D=0;
+else
+	flag_only3D=1
+
+if (sortbyname==1)
+	msort_name()
+else
+	msort_path()	
+}
+
+  
+
+
+function M(ind) {
+
+ wr=  "https://raw.githubusercontent.com/"+ xref[ind].w +  xref[ind].n + ".wrl"
+ md=  "https://raw.githubusercontent.com/" + xref[ind].p +  xref[ind].n + ".kicad_mod"
+ step=  "https://raw.githubusercontent.com/" +  xref[ind].S + xref[ind].n +".step"
+
+ulst1 ="<div><a href=\""+wr+"\" target=\"klj\">" +  wr  + "</a></div>" ;
+ulst2 ="<div><a href=\""+md+"\" target=\"klj\">" +  md  + "</div>" ;
+
+if (xref[ind].w)
+	ulst1 ="<div><a href=\""+wr+"\" target=\"klj\">" +  wr  + "</div>" ;
+else
+	ulst1="<br><br><div>No wrl model available</div>"
+
+if (xref[ind].S)
+	ulst3 ="<br><div>Step at: <a href=\""+step+"\" >" +  step  + "</div>" ;
+else
+	ulst3="<br><br><div>No step model available</div>"
+
+	
+       vrvh=ulst1+'<iframe src="wrmlviewver.html?path='+ wr + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
+       $("#wrml").html(vrvh);
+           
+        vrvh=ulst2+'<iframe src="kicadreader.html?path='+ md  + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />'+ ulst3;
+        $("#kicad").html(vrvh);
+ 
+}
+
+
+
+
+$(document).ready(function(){
+xref=getmodel();
+xindex=getpath();
+fillpath();
+iddef = genere_list()
+M(iddef)  //  par defaut
 }); 
     
 	
@@ -187,7 +244,13 @@ M(476)  // cp par defaut
 						 <tr><div id="kicad"></div> </tr>
 						 </table>
 		   </td>
+		   
+
 		    <td>
+			<a href="#Foo"  onclick="msort_path();"> sort by path </a> ;
+			<a href="#Foo"  onclick="msort_name();"> sort by model name </a> ;
+			<a href="#Foo"  onclick="mtogle3D();"> toggle 3D_only/all_footprint flag </a> ;
+
 						<div id="list"></div>			
 	       </td>
 		
