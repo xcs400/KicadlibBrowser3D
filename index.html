@@ -29,7 +29,7 @@
 	
 			#list{
   
-				height: 75em;
+				height: 74em;
 				padding: 1em;
 				margin: auto;
 				border: 0.062em solid #999;
@@ -49,6 +49,42 @@
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	   <script type='text/javascript' src='./modellist.js'  charset="utf-8" ></script>
 	
+		<script src="./threejs/build/three.min.js"></script>
+		<script src="./threejs/examples/js/controls/OrbitControls.js"></script>
+		
+		<script src="./threejs/examples/js/WebGL.js"></script>
+		<script src="./threejs/examples/js/libs/stats.min.js"></script>
+		<script src="./threejs/examples/js/lines/LineMaterial.js"></script>
+		<script src='./threejs/examples/js/lines/LineSegments2.js'></script>
+		<script src='./threejs/examples/js/lines/Line2.js'></script>
+		<script src='./threejs/examples/js/lines/LineSegmentsGeometry.js'></script>
+		<script src='./threejs/examples/js/lines/LineGeometry.js'></script>
+		<script src='./threejs/examples/js/lines/WireframeGeometry2.js'></script>
+		
+	
+		<script src="./Renderer/vrml.js"></script>
+		<script src="./Renderer/ThreeJs.js"></script>
+
+		<script src="./Renderer/ThreeJs/Animation.js"></script>
+		<script src="./Renderer/ThreeJs/VrmlNode.js"></script>
+		<script src="./Renderer/ThreeJs/Analyzer.js"></script>
+		<script src="./Renderer/ThreeJs/SmoothEdges.js"></script>
+
+		<script src="./Renderer/ThreeJs/VrmlNode/Interpolator.js"></script>
+		<script src="./Renderer/ThreeJs/VrmlNode/OrientationInterpolator.js"></script>
+		<script src="./Renderer/ThreeJs/VrmlNode/PositionInterpolator.js"></script>
+		<script src="./Renderer/ThreeJs/VrmlNode/DirectionalLight.js"></script>
+		<script src="./Renderer/ThreeJs/VrmlNode/PointLight.js"></script>
+		<script src="./Renderer/ThreeJs/VrmlNode/Text.js"></script>
+		<script src="./Renderer/ThreeJs/VrmlNode/Viewpoint.js"></script>
+		<script src="./Renderer/ThreeJs/VrmlNode/NavigationInfo.js"></script>
+		<script src="./Renderer/ThreeJs/VrmlNode/IndexedFaceSet.js"></script>
+
+		<script src="./kicadreader.js"></script>
+	
+
+		
+		
     
 <script>
   
@@ -123,7 +159,7 @@ for (ind =0 ; ind < xref.length; ind++)
 
 	if  (xref[ind].w )
 		{wr= "<b>(Wrl)</b>"
-		if (iddef==0)
+		if (iddef<10800)
 			iddef=ind
 		}
 	else
@@ -213,11 +249,16 @@ else
 	ulst3="<br><br><div>No step model available</div>"
 
 	
-       vrvh=ulst1+'<iframe src="wrmlviewver.html?path='+ wr + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
-       $("#wrml").html(vrvh);
-           
-        vrvh=ulst2+'<iframe src="kicadreader.html?path='+ md  + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />'+ ulst3;
-        $("#kicad").html(vrvh);
+	
+    //   vrvh=ulst1+'<iframe src="wrmlviewver.html?path='+ wr + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
+    //   $("#wrml").html(vrvh);
+ //	add_scenewrlwiewver(wr)
+   	add_scenekicadreader(md,wr, scene2)
+  
+	add_scenekicadreader(md,wr, scene)
+   
+  //      vrvh=ulst2+'<iframe src="kicadreader.html?path='+ md  + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />'+ ulst3;
+   //     $("#kicad").html(vrvh);
  
 }
 
@@ -225,11 +266,21 @@ else
 
 
 $(document).ready(function(){
+initkicadreader()
+initvrmlviewver()
+
+
 xref=getmodel();
 xindex=getpath();
 fillpath();
 iddef = genere_list()
 M(iddef)  //  par defaut
+
+
+ 
+ 
+animate();
+animate2();
 }); 
     
 	
@@ -240,8 +291,14 @@ M(iddef)  //  par defaut
       <tr>
 	  
            <td>       <table  <table align="top" >
-						 <tr><div id="wrml"></div>  </tr>
-						 <tr><div id="kicad"></div> </tr>
+						 <tr><div id="wrml"></div> 
+							<td> <div id="con_wrl" width="512" height="512" ></div></td>
+  
+						</tr>
+							
+						 <tr><div id="kicad"></div> 
+						  <td> <div id="con_kicad" width="512" height="512" ></div></td>
+						 </tr>
 						 </table>
 		   </td>
 		   
