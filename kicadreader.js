@@ -1114,236 +1114,350 @@ var debug = false;
 var container, stats;
 var  camera, controls, scene, renderer;
 
-
-
 var container2
 var  camera2, controls2, scene2, renderer2;
 
+mpx=0
+mpy=0
+mpz=0
 
-
-
-
-	function add_scenewrlwiewver(path)
+var gridHelper
+var pcb
+function add_scenewrlwiewver(path)
 	{
-		x=0,y=0,z=0
-		
-		var fileLoader = new THREE.FileLoader();
-		fileLoader.load(path, function (data) {
+	x=0,y=0,z=0
+	
+	var fileLoader = new THREE.FileLoader();
+	fileLoader.load(path, function (data) {
 
 
-		try {
-				var tree = vrmlParser.parse(data);
-			} catch ( e ) {
-				console.log('Exception with message ' + e.message);
+	try {
+			var tree = vrmlParser.parse(data);
+		} catch ( e ) {
+			console.log('Exception with message ' + e.message);
 
-				if ( undefined !== e.location ) {
-					console.log('Exception at location start: offset: ' + e.location.start.offset + ' line: ' + e.location.start.line + ' column: ' + e.location.start.column);
-					console.log('Exception at location end: offset: ' + e.location.end.offset + ' line: ' + e.location.end.line + ' column: ' + e.location.end.column);
-				}
-
-				return;
+			if ( undefined !== e.location ) {
+				console.log('Exception at location start: offset: ' + e.location.start.offset + ' line: ' + e.location.start.line + ' column: ' + e.location.start.column);
+				console.log('Exception at location end: offset: ' + e.location.end.offset + ' line: ' + e.location.end.line + ' column: ' + e.location.end.column);
 			}
-			
-				//	console.log(tree);
 
-        
-             	var obj = new THREE.Scene();
-				var  vrmlConverter = new VrmlParser.Renderer.ThreeJs(debug);
-
-		        vrmlConverter.render(tree, obj);
+			return;
+		}
 		
-				obj.scale.set( 2.54,  2.54, 2.54 );
-				obj.rotation.set( - Math.PI / 2,0,0 ) ;
-					
-			 scene2.add(obj);
-			 
-	        autoFitTo2( obj, camera2, controls2 )
+	//	console.log(tree);
+	var obj = new THREE.Scene();
+	var  vrmlConverter = new VrmlParser.Renderer.ThreeJs(debug);
+	vrmlConverter.render(tree, obj);
+
+	obj.scale.set( 2.54,  2.54, 2.54 );
+	obj.rotation.set( - Math.PI / 2,0,0 ) ;
+	obj.position.set( cur2x+ x,  y,  z );
 	
-		});
-	}
+	scene2.add(obj);
+	autoFitTo2( obj, camera2, controls2 )
+	});
+}
 		
-		function initvrmlviewver() {
+		
+function initvrmlviewver() {
 	
-  
+  	x=0,y=0,z=0
 
-				 camera2 = new THREE.PerspectiveCamera( 60, 1 , 0.01, 1e10 );
-				camera2.position.z = 6;
+	 camera2 = new THREE.PerspectiveCamera( 60, 1 , 0.01, 1e10 );
+	camera2.position.z = 6;
 
-				scene2 = new THREE.Scene();
-				scene2.add( camera2 );
+	scene2 = new THREE.Scene();
+	scene2.add( camera2 );
 
-				// light
+	// light
 
-				var dirLight = new THREE.DirectionalLight( 0xffffff );
-				dirLight.position.set( 400,200, 800 ).normalize();
+	var dirLight = new THREE.DirectionalLight( 0xffffff );
+	dirLight.position.set( 400,200, 800 ).normalize();
 
-				camera2.add( dirLight );
-				camera2.add( dirLight.target );
+	camera2.add( dirLight );
+	camera2.add( dirLight.target );
 
-				var dirLight1 = new THREE.DirectionalLight( 0xffffff );
-				dirLight1.position.set( -400, 200, 800 ).normalize();
+	var dirLight1 = new THREE.DirectionalLight( 0xffffff );
+	dirLight1.position.set( -400, 200, 800 ).normalize();
 
-				camera2.add( dirLight1 );
-				camera2.add( dirLight1.target );
-	  
-				var gridHelper = new THREE.GridHelper(100, 100); // 500 is grid size, 20 is grid step
-				gridHelper.position = new THREE.Vector3(0, 0, 0);
-				gridHelper.rotation = new THREE.Euler(0, 0, 0);
-				scene2.add(gridHelper);
+	camera2.add( dirLight1 );
+	camera2.add( dirLight1.target );
 
-				scene2.background = new THREE.Color( 0x87b5ff );
-				camera2.updateProjectionMatrix();			
+	// gridHelper = new THREE.GridHelper(20, 20); // 500 is grid size, 20 is grid step
+//	gridHelper.position = new THREE.Vector3(0, 0, 0);
+//	gridHelper.rotation = new THREE.Euler(0, 0, 0);
+//	scene2.add(gridHelper);
 
-				
-				// renderer
+	scene2.background = new THREE.Color( 0x87b5ff );
+	camera2.updateProjectionMatrix();			
 
-				renderer2 = new THREE.WebGLRenderer();
-				renderer2.setPixelRatio( window.devicePixelRatio );
-				sz=Math.min(window.innerWidth,window.innerWidth )
-				renderer2.setSize(sz /2.5, sz/2.5  );
+	
+	// renderer
 
-				container2 = document.getElementById( "con_wrl" );
-				controls2 = new THREE.OrbitControls( camera2,container2 );
-				
-				renderer2 = new THREE.WebGLRenderer( { antialias: true });
-				renderer2.setPixelRatio( window.devicePixelRatio );
-			
-		//		container = document.createElement( 'div' );
-		//		document.body.appendChild( container );
-				container2.appendChild( renderer2.domElement );
+	renderer2 = new THREE.WebGLRenderer();
+	renderer2.setPixelRatio( window.devicePixelRatio );
+	sz=Math.min(window.innerWidth,window.innerWidth )
+	renderer2.setSize(sz /2.5, sz/2.5  );
 
-				window.addEventListener( 'resize', onWindowResize, false );
-		
+	container2 = document.getElementById( "con_wrl" );
+	controls2 = new THREE.OrbitControls( camera2,container2 );
+	
+	renderer2 = new THREE.WebGLRenderer( { antialias: true });
+	renderer2.setPixelRatio( window.devicePixelRatio );
+
+//		container = document.createElement( 'div' );
+//		document.body.appendChild( container );
+	container2.appendChild( renderer2.domElement );
+
+	window.addEventListener( 'resize', onWindowResize, false );
+
 onWindowResize()
-			}
+}
 			
 
 
 
 
-
-
-	
 	
 
-	function initkicadreader() {
-
-				camera = new THREE.PerspectiveCamera( 60, 1 , 0.01, 1e10 );
-				camera.position.y = -10;
-				
+function initkicadreader()
+	{
+	camera = new THREE.PerspectiveCamera( 60, 1 , 0.01, 1e10 );
+	camera.position.y = -10;
 	
-				scene = new THREE.Scene();
-				scene.add( camera );
 
-				// light
+	scene = new THREE.Scene();
+	scene.add( camera );
 
-				var dirLight = new THREE.DirectionalLight( 0xffffff );
-				dirLight.position.set( 400,200, 800 ).normalize();
+	// light
 
-				camera.add( dirLight );
-				camera.add( dirLight.target );
+	var dirLight = new THREE.DirectionalLight( 0xffffff );
+	dirLight.position.set( 400,200, 800 ).normalize();
 
-				var dirLight1 = new THREE.DirectionalLight( 0xffffff );
-				dirLight1.position.set( -400, 200, 800 ).normalize();
+	camera.add( dirLight );
+	camera.add( dirLight.target );
 
-				camera.add( dirLight1 );
-				camera.add( dirLight1.target );
+	var dirLight1 = new THREE.DirectionalLight( 0xffffff );
+	dirLight1.position.set( -400, 200, 800 ).normalize();
+
+	camera.add( dirLight1 );
+	camera.add( dirLight1.target );
+
+	container = document.getElementById( "con_kicad" );
+	controls = new THREE.OrbitControls( camera , container);
 
 	
-				
-				container = document.getElementById( "con_kicad" );
-	
-				controls = new THREE.OrbitControls( camera , container);
+	renderer = new THREE.WebGLRenderer( { antialias: true });
+	renderer.setPixelRatio( window.devicePixelRatio );
+//		renderer.setSize( window.innerWidth, window.innerHeight );
+	sz=Math.min(window.innerWidth,window.innerWidth )
 
-				
-				renderer = new THREE.WebGLRenderer( { antialias: true });
-				renderer.setPixelRatio( window.devicePixelRatio );
-		//		renderer.setSize( window.innerWidth, window.innerHeight );
-				sz=Math.min(window.innerWidth,window.innerWidth )
-
-				renderer.setSize( sz /2.5, sz/2.5  );
-		//		container = document.createElement( 'div' );
-		//		document.body.appendChild( container );
-				container.appendChild( renderer.domElement );
+	renderer.setSize( sz /2.5, sz/2.5  );
+//		container = document.createElement( 'div' );
+//		document.body.appendChild( container );
+	container.appendChild( renderer.domElement );
 
 
-				window.addEventListener( 'resize', onWindowResize, false );
-				
-			
+	window.addEventListener( 'resize', onWindowResize, false );
 				
 	return scene			
-	
-	}
-	
+}
 	
 	
-	curx=0
-	curz=0
-	function add_scenekicadreader(path,path1, x,y,z) {
+	
+	
+	
+function add_scenekicadreader(path,path1,scenep ) {
 
-				x=0,y=0,z=0
-		
-				var fileLoader = new THREE.FileLoader();
-   
-   
-				fileLoader.load( path, function (data) {
+if ( path1 )
+		{
+		var fileLoader = new THREE.FileLoader();
+		fileLoader.load(path1, function (data) {
 
-				PartData[0]=data;
+			var  vrmlConverter = new VrmlParser.Renderer.ThreeJs(debug);
 				
-				obj = new THREE.Scene();
-				DrawFootprints(obj) 
-				obj.position.set( curx+ x,  y, curz+ z );
-				scene.add(obj);
-				
-				if ( path1 )
-						{
-						fileLoader.load(path1, function (data) {
-							PartData[0]=data;
-
-				//			DrawFootprints(scene) 
-							
-				//			var tree1 = vrmlParser.parse(data);
-				//			obj1 = new THREE.Scene();
-				//			vrmlConverter.render(tree1, obj1);
-				//			obj1.scale.set( 2.54,  2.54, 2.54 );
-				//			obj1.position.set( curx+ x,y,z );
-				//			obj1.rotation.set( - Math.PI / 2,0,0 ) ;
-				//			 scene.add(obj1);
-									
-									
-							});
-						}
-         
-			 
-				autoFitTo( scene, camera, controls )
-								
-				var boundingSphere = new THREE.Box3().setFromObject( scene ).getBoundingSphere();
+			var tree1 = vrmlParser.parse(data);
+			var obj1b = new THREE.Scene();
+			vrmlConverter.render(tree1, obj1b);
+			obj1b.scale.set( 2.54,  2.54, 2.54 );
+			//obj1.position.set( curx+ x,y,z );
+			obj1b.rotation.set( - Math.PI / 2,0,0 ) ;
 		
-			    curx  = boundingSphere.center.x + boundingSphere.radius 
-			    curz  = boundingSphere.center.z + boundingSphere.radius 
-		
+			part2kicadreader(path, scenep, obj1b ) 		
 					
-	//			 var gridHelper = new THREE.GridHelper(100, 100); // 
-	//			gridHelper.position = new THREE.Vector3(0, 0, 0);
-	//			gridHelper.rotation = new THREE.Euler(0, 0, 0);
-	//			scene.add(gridHelper);
+			});
+		}
+	else
+		part2kicadreader(path , scenep )
+}
 
-	//			 scene.background = new THREE.Color( 0x0 );
-	//			  camera.updateProjectionMatrix();			
+
+function part2kicadreader(path,sceneVi, obj1b ){
+		
+	var fileLoader = new THREE.FileLoader();
+
+	fileLoader.load( path, function (data) {
+
+		
+	if (gridHelper)
+		sceneVi.remove(gridHelper)
+	if (pcb)
+		sceneVi.remove(pcb)
+
+	var bBox = new THREE.Box3().setFromObject(sceneVi) ;
+
+	minX = bBox.min.x;
+	minY = bBox.min.y;
+	minZ = bBox.min.z
+	maxX = bBox.max.x;
+	maxY = bBox.max.y
+	maxZ = bBox.max.z;
+	
+	PartData[0]=data;
+	
+	obj = new THREE.Scene();
+	DrawFootprints(obj) 
+	
+	var  bBox = new THREE.Box3().setFromObject( obj ) 
+	
+	OminX = bBox.min.x;
+	OminY =  bBox.min.y;
+	OminZ = bBox.min.z
+	OmaxX = bBox.max.x;
+	OmaxY = bBox.max.y
+	OmaxZ = bBox.max.z;
+	
+	sceneVi.add(obj);
+								
+	if (minX== Infinity   )	
+	{
+				minX = 0
+				minY =0
+				minZ = 0
+				maxX =0
+				maxY = 0
+				maxZ = 0
 				
-				});			
-				
+	}
+
+	txt="scene x:"+ minX + " y:" + minZ + " xm:" +  maxX+ " ym:"+ maxZ+   "\n  sisex:"+ (maxX-minX) +  "  sisey:"+ (maxZ- minZ);
+	console.log(txt);
+	txt="obj   x:"+OminX + " y:" + OminZ + " xm:" +  OmaxX+ " ym:"+ OmaxZ+   "\n  sisex:"+ (OmaxX-OminX) +  "  sisey:" + (OmaxZ- OminZ);
+	console.log(txt)
+
+	if  ( OmaxX-OminX   <   OmaxZ-OminZ )// x inferieur a  z
+		OdirVertical=1
+		
+	else
+		  OdirVertical=0
+	
+	if  ( maxX-minX   <   maxZ-minZ )// x inferieur a  z
+		dirVertical=1
+	else
+		 dirVertical=0
+
+	console.log("orient obj :"+OdirVertical + " scene :" + dirVertical )
+
+
+	if  (OdirVertical &&  dirVertical)
+		{	
+			mpx = maxX  -  minX +2
+			mpz= 0
+			console.log("grow X  mpx:"+ mpx + " mpz"+mpz)
+		}
+		
+		
+	if  (!OdirVertical &&  dirVertical)
+		{
+			obj.rotation.set( 0,-  Math.PI / 2 ,0 ) ;
+			if (obj1b )
+				{obj1b.rotation.set(- Math.PI / 2, 0, - Math.PI / 2) ;
+				}
+			mpx = maxX  - minX+2
+			mpz= 0
+				console.log("rotate1 then grow X  mpx:"+ mpx + " mpz"+mpz)
+
+		}					
+	if  (OdirVertical &&  !dirVertical)
+		{
+			obj.rotation.set( 0, Math.PI / 2 ,0 ) ;
+			if (obj1b )
+				obj1b.rotation.set( - Math.PI / 2,   0 ,Math.PI /2 ) ;
+			mpx = 0
+			mpz= maxZ +  (OmaxX- OminX)
+			console.log("rotate2 then grow Y  mpx:"+ mpx + " mpz"+mpz)
+		}	
+		
+	if  (!OdirVertical &&  !dirVertical)
+		{
+			mpx = 0
+			mpz= maxZ  +  (OmaxZ- OminZ)
+			console.log("grow Y  mpx:"+ mpx + " mpz"+mpz)
+		}										
+
+
+	obj.position.set(  mpx,  0,  mpz );
+	if (obj1b )
+		{obj1b.position.set(  mpx, 5,  mpz ) ;
+		sceneVi.add(obj1b);
+		}
+		
+			var bBox = new THREE.Box3().setFromObject(sceneVi) ;
+
+	minX = bBox.min.x;
+	minY = bBox.min.y;
+	minZ = bBox.min.z
+	maxX = bBox.max.x;
+	maxY = bBox.max.y
+	maxZ = bBox.max.z;
+	
+	if (sceneVi == scene2)
+	{
+	w=  Math.max( (maxX-minX)+10 , (maxZ-minZ)+10 )
+	 gridHelper = new THREE.GridHelper(w  , w ); // 500 is grid size, 20 is grid step
+	gridHelper.position.set( maxX/2-2.5, 0.1 ,maxZ/2-2.5)
+	gridHelper.rotation = new THREE.Euler(0, 0, 0);
+	sceneVi.add(gridHelper);
+	
+	obj1b.position.set(  mpx, 1.2,  mpz ) ;
+	
+		var geometry = new THREE.BoxGeometry( (maxX-minX)+5 , 1.4 ,(maxZ-minZ)+2.5 );
+//	var material = new THREE.MeshBasicMaterial( {color: 0x008000} );
+	var material = new THREE.MeshPhongMaterial({color: 0x008000})
+	
+	 pcb = new THREE.Mesh( geometry, material );
+	 
+	 sceneVi.add(pcb);
+	 pcb.position.set(maxX/2-2.5, 0.15 ,maxZ/2-2.5)
+	 
+	 
+	
+	autoFitTo2( sceneVi, camera2, controls2 )
+	}
+	else
+		autoFitTo2( sceneVi, camera, controls )
+
 
 	
+		
+//			 var gridHelper = new THREE.GridHelper(100, 100); // 
+//			gridHelper.position = new THREE.Vector3(0, 0, 0);
+//			gridHelper.rotation = new THREE.Euler(0, 0, 0);
+//			scene.add(gridHelper);
 
-			}
+//			 scene.background = new THREE.Color( 0x0 );
+//			  camera.updateProjectionMatrix();			
+	
+	});			
+}
+			
+
 			
 			
 			
 			
 			
-			
-	if ( WEBGL.isWebGLAvailable() === false ) {
+if( WEBGL.isWebGLAvailable() === false ) {
 				document.body.appendChild( WEBGL.getWebGLErrorMessage() );
 
 		}
@@ -1351,7 +1465,7 @@ onWindowResize()
 		
 
 
-	function onWindowResize() {
+function onWindowResize() {
 
 	//	camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
