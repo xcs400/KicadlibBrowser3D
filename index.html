@@ -235,11 +235,11 @@ function M(ind) {
  md=  "https://raw.githubusercontent.com/" + xref[ind].p +  xref[ind].n + ".kicad_mod"
  step=  "https://raw.githubusercontent.com/" +  xref[ind].S + xref[ind].n +".step"
 
-ulst1 ="<div><a href=\""+wr+"\" target=\"klj\">" +  wr  + "</a></div>" ;
-ulst2 ="<div><a href=\""+md+"\" target=\"klj\">" +  md  + "</div>" ;
+ulst1 ="<a href=\""+wr+"\" target=\"klj\">" +  wr  + "</a>" ;
+ulst2 ="<a href=\""+md+"\" target=\"klj\">" +  md  + "" ;
 
 if (xref[ind].w)
-	ulst1 ="<div><a href=\""+wr+"\" target=\"klj\">" +  wr  + "</div>" ;
+	ulst1 ="<a href=\""+wr+"\" target=\"klj\">" +  wr  + "" ;
 else
 	ulst1="<br><br><div>No wrl model available</div>"
 
@@ -250,15 +250,21 @@ else
 
 	
 	
-    //   vrvh=ulst1+'<iframe src="wrmlviewver.html?path='+ wr + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />';
-    //   $("#wrml").html(vrvh);
+  
  //	add_scenewrlwiewver(wr)
    	add_scenekicadreader(md,wr, scene2)
   
 	add_scenekicadreader(md,wr, scene)
    
-  //      vrvh=ulst2+'<iframe src="kicadreader.html?path='+ md  + '" style="width:500px;height:400px;border:1px solid #000000;z-index:1; " />'+ ulst3;
-   //     $("#kicad").html(vrvh);
+        vrvh=ulst1
+       $("#wrml").html(vrvh);
+	   
+        vrvh=ulst2
+        $("#kicad").html(vrvh);
+    
+		vrvh=ulst3
+        $("#stepname").html(vrvh);
+ 
  
 }
 
@@ -299,6 +305,10 @@ animate2();
 						 <tr><div id="kicad"></div> 
 						  <td> <div id="con_kicad" width="512" height="512" ></div></td>
 						 </tr>
+						 <tr><div id="stepname"></div> 
+						  
+						 </tr>
+						 
 						 </table>
 		   </td>
 		   
