@@ -1421,7 +1421,7 @@ function part2kicadreader(path,sceneVi, obj1b ){
 	
 	obj1b.position.set(  mpx, 1.2,  mpz ) ;
 	
-		var geometry = new THREE.BoxGeometry( (maxX-minX)+5 , 1.4 ,(maxZ-minZ)+2.5 );
+		var geometry = new THREE.BoxGeometry( (maxX-minX)+5 , 1.4 ,(maxZ-minZ)+5 );
 //	var material = new THREE.MeshBasicMaterial( {color: 0x008000} );
 	var material = new THREE.MeshPhongMaterial({color: 0x008000})
 	
