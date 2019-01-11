@@ -1265,8 +1265,10 @@ function initkicadreader()
 	
 	
 	
-	
-	
+var	lastOgroZ=1000
+
+var	lastOgroX=1000	
+
 function add_scenekicadreader(path,path1,scenep ) {
 
 if ( path1 )
@@ -1356,44 +1358,49 @@ function part2kicadreader(path,sceneVi, obj1b ){
 	else
 		 dirVertical=0
 
-	console.log("orient obj :"+OdirVertical + " scene :" + dirVertical )
 
+	
+	if  ( (maxZ-minZ)   < 100)
+		{
+			mpx = 0
+			mpz=( maxZ-minZ)  +  (OmaxZ- OminZ) +2
+			console.log("grow Y  mpx:"+ mpx + " mpz"+mpz)
+				lastOgroZ=10000
+		}										
 
-	if  (OdirVertical &&  dirVertical)
-		{	
-			mpx = maxX  -  minX +2
+	else
+	{
+	
+
+		if (lastOgroZ <  (maxZ-minZ) )
+			{	mpx = lastOgroX
+				mpz=lastOgroZ
+					console.log("keep1 same Y X  mpx:"+ mpx + " mpz"+mpz)
+					console.log("lastOgroZ < (maxZ-minZ)  :"+ lastOgroZ + " "+ (maxZ-minZ))
+
+				}
+
+		else
+			{
+			lastOgroZ=0
+
+			mpx = maxX  -  minX 
+			lastOgroX=mpx
+				
 			mpz= 0
 			console.log("grow X  mpx:"+ mpx + " mpz"+mpz)
-		}
+				console.log("lastOgroZ < (maxZ-minZ)  :"+ lastOgroZ + " "+ (maxZ-minZ))
+			}			
 		
-		
-	if  (!OdirVertical &&  dirVertical)
-		{
-			obj.rotation.set( 0,-  Math.PI / 2 ,0 ) ;
-			if (obj1b )
-				{obj1b.rotation.set(- Math.PI / 2, 0, - Math.PI / 2) ;
-				}
-			mpx = maxX  - minX+2
-			mpz= 0
-				console.log("rotate1 then grow X  mpx:"+ mpx + " mpz"+mpz)
 
-		}					
-	if  (OdirVertical &&  !dirVertical)
-		{
-			obj.rotation.set( 0, Math.PI / 2 ,0 ) ;
-			if (obj1b )
-				obj1b.rotation.set( - Math.PI / 2,   0 ,Math.PI /2 ) ;
-			mpx = 0
-			mpz= maxZ +  (OmaxX- OminX)
-			console.log("rotate2 then grow Y  mpx:"+ mpx + " mpz"+mpz)
-		}	
+		lastOgroZ=lastOgroZ + ( OmaxZ - OminZ) +2
+				console.log("final lastOgroZ  :"+ lastOgroZ )
+
+
+	}
 		
-	if  (!OdirVertical &&  !dirVertical)
-		{
-			mpx = 0
-			mpz= maxZ  +  (OmaxZ- OminZ)
-			console.log("grow Y  mpx:"+ mpx + " mpz"+mpz)
-		}										
+			
+
 
 
 	obj.position.set(  mpx,  0,  mpz );
