@@ -17,19 +17,50 @@
 			a:hover { background: yellow; } 
 		        
 
-			#info {
-				color: #fff;
-				position: absolute;
-				top: 10px;
-				width: 100%;
-				text-align: center;
-				z-index: 100;
-				display:block;
-			}
+				.users {
+					  table-layout: fixed;
+					  width: 100%;
+					  overflow: hidden;				 
+	
+					}
+				.users td {
+					  overflow: hidden;
+					}
+
+				.usersL {
+					width: 50%;
+					}
+					
+				.usersL td {
+					}
+					
+					
+				.usersR {
+					  width: 50%;
+					}
+				.usersR td {
+					}
+			
+			
+			.row-L{
+					}
+			.row-R{
+
+					}
+			
+			   
+				.row-View{
+				align:top
+		
+					}
+				.row-List{
+				
+					}
+					
 	
 			#list{
-  
-				height: 74em;
+  			
+				height: 60em;
 				padding: 1em;
 				margin: auto;
 				border: 0.062em solid #999;
@@ -44,8 +75,7 @@
 
 <body>
  
-	<div id="info">		<a href="" target="_blank" rel="noopener"></a>		</div>
-   
+  
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	   <script type='text/javascript' src='./modellist.js'  charset="utf-8" ></script>
 	
@@ -293,36 +323,48 @@ animate2();
 		</script>
 
 
-  <table align="left" >
+  <table  class="users" >
+
+	 <tr>
+      <th class="row-L"></th>
+      <th class="row-R"></th>
+
+    </tr>
+
       <tr>
 	  
-           <td>       <table  <table align="top" >
-						 <tr><div id="wrml"></div> 
-							<td> <div id="con_wrl" width="512" height="512" ></div></td>
-  
-						</tr>
+           <td>        <table  class="userL"  >
+						<th class="row-View"></th>
+						 
+						 <tr>	<td>	 <div id="wrml"></div> 								</td></tr>
+						 <tr>	<td>     <div id="con_wrl" width="40" height="40" ></div>   </td></tr>
 							
-						 <tr><div id="kicad"></div> 
-						  <td> <div id="con_kicad" width="512" height="512" ></div></td>
-						 </tr>
-						 <tr><div id="stepname"></div> 
-						 </tr>
+						 <tr>   <td>  <div id="kicad"></div>  								</td></tr>
+						 <tr>   <td> <div id="con_kicad" width="40" height="40" ></div>   	</td></tr>
+						 <tr>	<td> <div id="stepname"></div>								</td></tr> 
 						 
 						 </table>
 		   </td>
 		   
 
 		    <td>
-			<a href="#Foo"  onclick="msort_path();"> sort by path </a> ;
-			<a href="#Foo"  onclick="msort_name();"> sort by model name </a> ;
-			<a href="#Foo"  onclick="mtogle3D();"> toggle 3D_only/all_footprint flag </a> ;
-
-						<div id="list"></div>			
+					<table  class="userR"  >
+					 <th class="row-List"></th>
+					<tr>
+						<td>	<a href="#Foo"  onclick="msort_path();"> sort by path </a> ;
+							<a href="#Foo"  onclick="msort_name();"> sort by model name </a> ;
+							<a href="#Foo"  onclick="mtogle3D();"> toggle 3D_only/all_footprint flag </a> ;
+						</td>
+					</tr>
+					<tr>
+						<td><div id="list"></div><td>	
+					</tr>
+					</table>					
 	       </td>
 		
 	 </tr>
 	
-           </table>
+   </table>
 
  
 	</body>
