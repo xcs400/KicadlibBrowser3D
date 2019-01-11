@@ -175,7 +175,7 @@ function autoFitTo2( obj, camera, controls ) {
 
 	  const boundingSphere = new THREE.Box3().setFromObject( obj ).getBoundingSphere();
 
-	  const scale =1.5; // object size / display size
+	  const scale =1.8; // object size / display size
 	  const objectAngularSize = ( camera.fov * Math.PI / 180 ) * scale;
 	  const distanceToCamera = boundingSphere.radius / Math.tan( objectAngularSize / 2 )
 	  const len = Math.sqrt( Math.pow( distanceToCamera, 2 ) + Math.pow( distanceToCamera, 2 ) )
@@ -1467,18 +1467,21 @@ if( WEBGL.isWebGLAvailable() === false ) {
 
 function onWindowResize() {
 
-	//	camera.aspect = window.innerWidth / window.innerHeight;
+		sz=Math.min(window.innerWidth,window.innerHeight )
+
+		camera.aspect = 2.4/1.5
 		camera.updateProjectionMatrix();
 
-		sz=Math.min(window.innerWidth,window.innerWidth )
-		renderer.setSize( sz/2.5, sz/2.5 );
+		renderer.setSize( sz/1.5 , sz/2.4);
 		
 				
 				
-	//	camera2.aspect = window.innerWidth / window.innerHeight;
+		camera2.aspect = 2.4/1.5
 		camera2.updateProjectionMatrix();
 
-		renderer2.setSize( sz /2.5, sz/2.5 );
+		renderer2.setSize(sz/1.5 , sz/2.4);
+	//	camera.updateProjectionMatrix();
+
 
 	
 	
