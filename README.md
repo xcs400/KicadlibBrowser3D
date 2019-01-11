@@ -3,7 +3,9 @@ Online kicad lib browser for footprints and 3D models.
 
 This is an unfinished work but it can be tested here: https://xcs400.github.io/KicadlibBrowser3D/
 
-My goal is being able to see the Kicad(V5) footprint and 3D models available on Github (mainly from kicad official lib) but also from others sites without installing any tool. 
+My goal is being able to see the Kicad(V5) footprint and 3D models available on Github (mainly from kicad official lib) but also from others author without installing any tool. 
+
+There are no lib here, only links. 
 
 # todo
 
@@ -11,7 +13,7 @@ My goal is being able to see the Kicad(V5) footprint and 3D models available on 
 
   -generate a dynamic list from the official .pretty folder and from others sites (here it is static from modellist.js)
 
-  -setup a better browser
+  -setup a better name browser
 
  
  
