@@ -49,7 +49,9 @@ DrawStrokeText= function(color, scene,x  , y  , cx, token)
 
 	text.position.set( x   ,1, y -  -cx/2);
 	
-	text.rotation.x=THREE.Math.degToRad(-90);
+//	text.rotation.x=THREE.Math.degToRad(-90);
+	text.rotation.set (THREE.Math.degToRad(-90),THREE.Math.degToRad(-90),THREE.Math.degToRad(-90))
+	
 	scene.add( text );
 	return text
 	}
