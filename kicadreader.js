@@ -1413,22 +1413,22 @@ function part2kicadreader(path,sceneVi, obj1b ){
 	
 	if (sceneVi == scene2)
 	{
-	w=  Math.max( (maxX-minX)+10 , (maxZ-minZ)+10 )
+	w=  Math.max( (maxX-minX)+5 , (maxZ-minZ)+5 )
 	 gridHelper = new THREE.GridHelper(w  , w ); // 500 is grid size, 20 is grid step
-	gridHelper.position.set( maxX/2-2.5, 0.1 ,maxZ/2-2.5)
+	gridHelper.position.set( minX +  (maxX-minX)/2, 0.1 ,minZ +(maxZ-minZ)/2)
 	gridHelper.rotation = new THREE.Euler(0, 0, 0);
 	sceneVi.add(gridHelper);
 	
 	obj1b.position.set(  mpx, 1.2,  mpz ) ;
 	
-		var geometry = new THREE.BoxGeometry( (maxX-minX)+5 , 1.4 ,(maxZ-minZ)+5 );
+		var geometry = new THREE.BoxGeometry( (maxX-minX)+0 , 1.4 ,(maxZ-minZ)+0);
 //	var material = new THREE.MeshBasicMaterial( {color: 0x008000} );
 	var material = new THREE.MeshPhongMaterial({color: 0x008000})
 	
 	 pcb = new THREE.Mesh( geometry, material );
 	 
 	 sceneVi.add(pcb);
-	 pcb.position.set(maxX/2-2.5, 0.15 ,maxZ/2-2.5)
+	 pcb.position.set(minX +  (maxX-minX)/2 , 0.15 ,minZ +(maxZ-minZ)/2 )
 	 
 	 
 	
