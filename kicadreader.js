@@ -329,6 +329,17 @@ function getCompoundBoundingBox_withouttext(_object) {
 			absoluteMinX+=0
 	}
 	
+//patch, because doent not work TODO!
+
+	var Box = new THREE.Box3().setFromObject(_object) 
+	absoluteMinX=Box.min.x //store1
+   absoluteMaxX= Box.max.x
+  absoluteMinY= Box.min.y
+  absoluteMaxY= Box.max.y
+  absoluteMinZ= Box.max.y
+  absoluteMinX= Box.max.z
+  
+	
   _object.minX=absoluteMinX //store1
   _object.maxX=absoluteMaxX
   _object.minY=absoluteMinY
