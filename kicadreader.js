@@ -289,7 +289,7 @@ function getscene_withouttext(comp,res) {
 			
 			absoluteMinX = Math.min(absoluteMinX,comp[i].minX);
 			absoluteMaxX = Math.max(absoluteMaxX,comp[i].maxX);
-			absoluteMinY = Math.min(absoluteMinY,comp[i].minX);
+			absoluteMinY = Math.min(absoluteMinY,comp[i].minY);
 			absoluteMaxY = Math.max(absoluteMaxY,comp[i].maxY);
 			absoluteMinZ = Math.min(absoluteMinZ,comp[i].minZ);
 			absoluteMaxZ = Math.max(absoluteMaxZ,comp[i].maxZ);
@@ -297,12 +297,12 @@ function getscene_withouttext(comp,res) {
 	
 	
 	
-  res.minX=absoluteMinX //store1
-  res.maxX=absoluteMaxX
-  res.minY=absoluteMinY
-  res.maxY=absoluteMaxY
-  res.minZ=absoluteMinZ
-  res.maxZ=absoluteMinX
+  res.minx=absoluteMinX //store1
+  res.maxx=absoluteMaxX
+  res.miny=absoluteMinY
+  res.maxy=absoluteMaxY
+  res.minz=absoluteMinZ
+  res.maxz=absoluteMaxZ
   
   
 }
@@ -317,13 +317,14 @@ function getCompoundBoundingBox_withouttext(_object) {
 
     for (var i = 0; i < _object.children.length; i++) {
 		if  (_object.children[i].geometry.type !=  "TextBufferGeometry")
-			{_object.children[i].geometry.computeBoundingBox();
-			absoluteMinX = Math.min(absoluteMinX,_object.children[i].geometry.boundingBox.min.x);
-			absoluteMaxX = Math.max(absoluteMaxX,_object.children[i].geometry.boundingBox.max.x);
-			absoluteMinY = Math.min(absoluteMinY,_object.children[i].geometry.boundingBox.min.y);
-			absoluteMaxY = Math.max(absoluteMaxY,_object.children[i].geometry.boundingBox.max.y);
-			absoluteMinZ = Math.min(absoluteMinZ,_object.children[i].geometry.boundingBox.min.z);
-			absoluteMaxZ = Math.max(absoluteMaxZ,_object.children[i].geometry.boundingBox.max.z);
+			{
+		  var Box = new THREE.Box3().setFromObject(_object.children[i]) 
+			absoluteMinX = Math.min(absoluteMinX,Box.min.x);
+			absoluteMaxX = Math.max(absoluteMaxX,Box.max.x);
+			absoluteMinY = Math.min(absoluteMinY,Box.min.y);
+			absoluteMaxY = Math.max(absoluteMaxY,Box.max.y);
+			absoluteMinZ = Math.min(absoluteMinZ,Box.min.z);
+			absoluteMaxZ = Math.max(absoluteMaxZ,Box.max.z);
 			}
 		else
 			absoluteMinX+=0
@@ -331,21 +332,21 @@ function getCompoundBoundingBox_withouttext(_object) {
 	
 //patch, because doent not work TODO!
 
-	var Box = new THREE.Box3().setFromObject(_object) 
+/*	var Box = new THREE.Box3().setFromObject(_object) 
 	absoluteMinX=Box.min.x //store1
    absoluteMaxX= Box.max.x
   absoluteMinY= Box.min.y
   absoluteMaxY= Box.max.y
   absoluteMinZ= Box.max.y
   absoluteMinX= Box.max.z
-  
+ */ 
 	
   _object.minX=absoluteMinX //store1
   _object.maxX=absoluteMaxX
   _object.minY=absoluteMinY
   _object.maxY=absoluteMaxY
   _object.minZ=absoluteMinZ
-  _object.maxZ=absoluteMinX
+  _object.maxZ=absoluteMaxZ
     // set generic height and width values
     _object.depth = (absoluteMaxX - absoluteMinX) * _object.scale.x;
     _object.height = (absoluteMaxY - absoluteMinY) * _object.scale.y;
@@ -1467,15 +1468,15 @@ function part2kicadreader(path,sceneVi, obj1b ){
 	if (pcb)
 		sceneVi.remove(pcb)
 
-	var bBox = new THREE.Box3().setFromObject(sceneVi) ;
- //    var bBox = new Array()
-//	getscene_withouttext(Componants,bBox)
-	minX = bBox.min.x;
-	minY = bBox.min.y;
-	minZ = bBox.min.z
-	maxX = bBox.max.x;
-	maxY = bBox.max.y
-	maxZ = bBox.max.z;
+//	var bBox = new THREE.Box3().setFromObject(sceneVi) ;
+     var bBox = new Array()
+	getscene_withouttext(Componants,bBox)
+	minX = bBox.minx;
+	minY = bBox.miny;
+	minZ = bBox.minz
+	maxX = bBox.maxx;
+	maxY = bBox.maxy
+	maxZ = bBox.maxz;
 	
 	PartData[0]=data;
 	
@@ -1483,7 +1484,7 @@ function part2kicadreader(path,sceneVi, obj1b ){
 
 	//obj = new THREE.Scene();
 	DrawFootprints(obj)      // render the footfrint
-//	 var  bBox = new THREE.Box3().setFromObject( obj ) 
+	 var  bBox = new THREE.Box3().setFromObject( obj ) 
 	 getCompoundBoundingBox_withouttext(obj)
 
 
@@ -1578,17 +1579,17 @@ function part2kicadreader(path,sceneVi, obj1b ){
 		sceneVi.add(obj1b);
 		}
 		
-var bBox = new THREE.Box3().setFromObject(sceneVi) ;
+ //var bBox = new THREE.Box3().setFromObject(sceneVi) ;
 
- //   var bBox = new Array()
-//	getscene_withouttext(Componants,bBox)
+    var bBox = new Array()
+	getscene_withouttext(Componants,bBox)
 
-	minX = bBox.min.x;
-	minY = bBox.min.y;
-	minZ = bBox.min.z
-	maxX = bBox.max.x;
-	maxY = bBox.max.y
-	maxZ = bBox.max.z;
+	minX = bBox.minx;
+	minY = bBox.miny;
+	minZ = bBox.minz
+	maxX = bBox.maxx;
+	maxY = bBox.maxy
+	maxZ = bBox.maxz;
 	
 	
 	if (sceneVi == scene2)
