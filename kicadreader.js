@@ -29,7 +29,9 @@ TextLayerColor={ F_Fab:0xffffff ,
 
 var HidePinNumber=0			
 					
-var Componants = new Array()
+var ComponantsScene1 = new Array()
+var ComponantsScene2 = new Array()
+var Componants 
 
 var usecase="d"
 var DEFAULTPEN=0.01
@@ -284,18 +286,30 @@ function getscene_withouttext(comp,res) {
 
     var absoluteMinX = 0, absoluteMaxX = 0, absoluteMinY = 0, absoluteMaxY = 0, absoluteMinZ = 0, absoluteMaxZ = 0;
 
+	console.log("getscene_withouttext  as " + comp.length + ", component "  );
 	if (comp )
-		for (var i = 0;  i < comp.length; i++) {
-			
-			absoluteMinX = Math.min(absoluteMinX,comp[i].minX);
-			absoluteMaxX = Math.max(absoluteMaxX,comp[i].maxX);
-			absoluteMinY = Math.min(absoluteMinY,comp[i].minY);
-			absoluteMaxY = Math.max(absoluteMaxY,comp[i].maxY);
-			absoluteMinZ = Math.min(absoluteMinZ,comp[i].minZ);
-			absoluteMaxZ = Math.max(absoluteMaxZ,comp[i].maxZ);
+		{
+			if (comp.length )
+			{
+			var absoluteMinX = Infinity
+			var absoluteMaxX = -Infinity
+			var absoluteMinY = Infinity
+			var absoluteMaxY = -Infinity
+			var absoluteMinZ = Infinity
+			var absoluteMaxZ = -Infinity
+
+			for (var i = 0;  i < comp.length; i++) {
+				
+				absoluteMinX = Math.min(absoluteMinX,comp[i].minX );
+				absoluteMaxX = Math.max(absoluteMaxX,comp[i].maxX);
+				absoluteMinY = Math.min(absoluteMinY,comp[i].minY);
+				absoluteMaxY = Math.max(absoluteMaxY,comp[i].maxY);
+				absoluteMinZ = Math.min(absoluteMinZ,comp[i].minZ);
+				absoluteMaxZ = Math.max(absoluteMaxZ,comp[i].maxZ);
+				}
 			}
-	
-	
+		}
+		
 	
   res.minx=absoluteMinX //store1
   res.maxx=absoluteMaxX
@@ -304,6 +318,8 @@ function getscene_withouttext(comp,res) {
   res.minz=absoluteMinZ
   res.maxz=absoluteMaxZ
   
+     console.log("scene at : minx " + absoluteMinX + ", maxx: " +absoluteMaxX + ", minz: " + absoluteMinZ + "max z " + absoluteMaxZ );
+ 	
   
 }
 
@@ -313,18 +329,23 @@ function getscene_withouttext(comp,res) {
 function getCompoundBoundingBox_withouttext(_object) {
 
 
-    var absoluteMinX = 0, absoluteMaxX = 0, absoluteMinY = 0, absoluteMaxY = 0, absoluteMinZ = 0, absoluteMaxZ = 0;
+    var absoluteMinX = Infinity
+	var absoluteMaxX = -Infinity
+	var absoluteMinY = Infinity
+	var absoluteMaxY = -Infinity
+	var absoluteMinZ = Infinity
+	var absoluteMaxZ = -Infinity
 
     for (var i = 0; i < _object.children.length; i++) {
 		if  (_object.children[i].geometry.type !=  "TextBufferGeometry")
 			{
 		  var Box = new THREE.Box3().setFromObject(_object.children[i]) 
-			absoluteMinX = Math.min(absoluteMinX,Box.min.x);
-			absoluteMaxX = Math.max(absoluteMaxX,Box.max.x);
-			absoluteMinY = Math.min(absoluteMinY,Box.min.y);
-			absoluteMaxY = Math.max(absoluteMaxY,Box.max.y);
-			absoluteMinZ = Math.min(absoluteMinZ,Box.min.z);
-			absoluteMaxZ = Math.max(absoluteMaxZ,Box.max.z);
+			absoluteMinX = Math.min(absoluteMinX,Box.min.x   );
+			absoluteMaxX = Math.max(absoluteMaxX,Box.max.x  );
+			absoluteMinY = Math.min(absoluteMinY,Box.min.y  );
+			absoluteMaxY = Math.max(absoluteMaxY,Box.max.y );
+			absoluteMinZ = Math.min(absoluteMinZ,Box.min.z );
+			absoluteMaxZ = Math.max(absoluteMaxZ,Box.max.z );
 			}
 		else
 			absoluteMinX+=0
@@ -340,6 +361,12 @@ function getCompoundBoundingBox_withouttext(_object) {
   absoluteMinZ= Box.max.y
   absoluteMinX= Box.max.z
  */ 
+  absoluteMinX+=  _object.position.x 
+  absoluteMaxX+=  _object.position.x 
+  absoluteMinY+= _object.position.y
+  absoluteMaxY+=  _object.position.y
+  absoluteMinZ+= _object.position.z 
+  absoluteMaxZ+=  _object.position.z 
 	
   _object.minX=absoluteMinX //store1
   _object.maxX=absoluteMaxX
@@ -357,7 +384,9 @@ function getCompoundBoundingBox_withouttext(_object) {
     if (_object.originalHeight === undefined) _object.originalHeight = _object.height;
     if (_object.originalWidth === undefined) _object.originalWidth = _object.width;
 
-    console.log("Depth: " + _object.depth + ", Height: " + _object.height + ", Width: " + _object.width);
+    console.log("composant at : minx " + absoluteMinX + ", maxx: " +absoluteMaxX + ", minz: " + absoluteMinZ + "max z " + absoluteMaxZ );
+   console.log("composant position : pox x " + _object.position.x + ", pos z"+  _object.position.z );
+    console.log("composant Depth: " + _object.depth + ", Height: " + _object.height + ", Width: " + _object.width);
 }
 
 
@@ -1417,9 +1446,13 @@ function initkicadreader()
 	
 	
 	
-var	lastOgroZ=1000
 
-var	lastOgroX=1000	
+
+
+	var sc1lastOgroX=0
+var sc1lastOgroZ=0
+var sc2lastOgroX=0
+var sc2lastOgroZ=0
 
 function add_scenekicadreader(path,path1,scenep ) {
 
@@ -1457,11 +1490,20 @@ function part2kicadreader(path,sceneVi, obj1b ){
 
 	fileLoader.load( path, function (data) {
 
+	
 	if (sceneVi == scene2)
-		HidePinNumber=1
+	{HidePinNumber=1
+	Componants=ComponantsScene2
+	lastOgroX=sc2lastOgroX
+	lastOgroZ=sc2lastOgroZ
+	}
 	else
-		HidePinNumber=0
+	{	HidePinNumber=0
+	Componants=ComponantsScene1
+	lastOgroX=sc1lastOgroX
+	lastOgroZ=sc1lastOgroZ
 
+	}
 
 	if (gridHelper)
 		sceneVi.remove(gridHelper)
@@ -1497,78 +1539,47 @@ function part2kicadreader(path,sceneVi, obj1b ){
 	
 	sceneVi.add(obj);
 								
-	if (minX== Infinity   )	
-	{
-				minX = 0
-				minY =0
-				minZ = 0
-				maxX =0
-				maxY = 0
-				maxZ = 0
-				
-	}
 
-	txt="scene x:"+ minX + " y:" + minZ + " xm:" +  maxX+ " ym:"+ maxZ+   "\n  sisex:"+ (maxX-minX) +  "  sisey:"+ (maxZ- minZ);
+
+	txt="scene x:"+ minX + " z:" + minZ + " xm:" +  maxX+ " zm:"+ maxZ+   "\n  sisex:"+ (maxX-minX) +  "  sisey:"+ (maxZ- minZ);
 	console.log(txt);
-	txt="obj   x:"+OminX + " y:" + OminZ + " xm:" +  OmaxX+ " ym:"+ OmaxZ+   "\n  sisex:"+ (OmaxX-OminX) +  "  sisey:" + (OmaxZ- OminZ);
+	txt="obj   x:"+OminX + " z:" + OminZ + " xm:" +  OmaxX+ " zm:"+ OmaxZ+   "\n  sisex:"+ (OmaxX-OminX) +  "  sisey:" + (OmaxZ- OminZ);
 	console.log(txt)
 
-	if  ( OmaxX-OminX   <   OmaxZ-OminZ )// x inferieur a  z
-		OdirVertical=1
-		
-	else
-		  OdirVertical=0
 	
-	if  ( maxX-minX   <   maxZ-minZ )// x inferieur a  z
-		dirVertical=1
-	else
-		 dirVertical=0
 
-
-	
-	if  ( (maxZ-minZ)   < 100)
+	if  ( lastOgroZ   < 100)
 		{
-			mpx = 0
-			mpz=( maxZ-minZ)  +  (OmaxZ- OminZ) +2
+			lastOgroZ+=  (OmaxZ- OminZ)/2 +1
+
+			mpx =lastOgroX
+			mpz=lastOgroZ
+			
+			lastOgroZ+=  (OmaxZ- OminZ)/2 +1
+		
+
 			console.log("grow Y  mpx:"+ mpx + " mpz"+mpz)
-				lastOgroZ=10000
+			
 		}										
 
 	else
 	{
-	
-
-		if (lastOgroZ <  (maxZ-minZ) )
-			{	mpx = lastOgroX
-				mpz=lastOgroZ
-					console.log("keep1 same Y X  mpx:"+ mpx + " mpz"+mpz)
-					console.log("lastOgroZ < (maxZ-minZ)  :"+ lastOgroZ + " "+ (maxZ-minZ))
-
-				}
-
-		else
-			{
-			lastOgroZ=0
-
-			mpx = maxX  -  minX 
-			lastOgroX=mpx
-				
-			mpz= 0
-			console.log("grow X  mpx:"+ mpx + " mpz"+mpz)
-				console.log("lastOgroZ < (maxZ-minZ)  :"+ lastOgroZ + " "+ (maxZ-minZ))
-			}			
+		lastOgroX= maxX
+		mpx = lastOgroX
+			
+		lastOgroZ=  (OmaxZ- OminZ)/2 +1
+		mpz=lastOgroZ
+		lastOgroZ+=  (OmaxZ- OminZ)/2 +1
 		
-
-		lastOgroZ=lastOgroZ + ( OmaxZ - OminZ) +2
-				console.log("final lastOgroZ  :"+ lastOgroZ )
-
-
+		console.log("grow X:"+ mpx + " mpz"+mpz)
 	}
 	
 
 		autoFitTo2( sceneVi, camera, controls )
 
-	obj.position.set(  mpx,  0,  mpz );
+		console.log("mov component to  x:"+ mpx + " z:" + mpz )
+	
+	obj.position.set(  mpx,  0, mpz  );
 	 getCompoundBoundingBox_withouttext(obj)
 	 Componants.push(obj)
 		
@@ -1594,8 +1605,12 @@ function part2kicadreader(path,sceneVi, obj1b ){
 	
 	if (sceneVi == scene2)
 	{
-	w=  Math.max( (maxX-minX)+5 , (maxZ-minZ)+5 )
-	 gridHelper = new THREE.GridHelper(w  , w ); // 500 is grid size, 20 is grid step
+	var w=  Math.max( (maxX-minX)+5 , (maxZ-minZ)+5 )
+	if (w < 50.0 )
+		gridHelper = new THREE.GridHelper(w  , w )
+	else
+		gridHelper = new THREE.GridHelper(w  , w/10 );
+
 	gridHelper.position.set( minX +  (maxX-minX)/2, 0.1 ,minZ +(maxZ-minZ)/2)
 	gridHelper.rotation = new THREE.Euler(0, 0, 0);
 	sceneVi.add(gridHelper);
@@ -1617,8 +1632,23 @@ function part2kicadreader(path,sceneVi, obj1b ){
 	}
 
 		
+		if (sceneVi == scene2)
+	{
+	sc2lastOgroX=lastOgroX
+	sc2lastOgroZ=lastOgroZ
+	}
+	else
+	{	
+
+	sc1lastOgroX=lastOgroX
+	sc1lastOgroZ=lastOgroZ
+
+	}	
 	
-	});			
+	});	
+
+
+
 }
 			
 
