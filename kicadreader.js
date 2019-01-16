@@ -37,6 +37,19 @@ var usecase="d"
 var DEFAULTPEN=0.01
 var Scale =1.5;
 
+var rotate_modelX=0
+var rotate_modelY=0
+var rotate_modelZ=0
+
+var At_modelX=0
+var At_modelY=0
+var At_modelZ=0
+
+var Scale_modelX=1
+var Scale_modelX=1
+var Scale_modelX=1
+
+
 NormalizeAngle= function(para)
 {
   var pi = Math.PI;
@@ -864,7 +877,68 @@ function DrawFootprints( obj3D, midx, midy, transp)
                 GetToken(line);    /* ignore Y */
                 if (line.length > 0)
                     module_angle = GetTokenDouble(line);
-            } else if (token =="(fp_line") {
+            } 
+			
+			
+
+					
+			
+			
+			else if (token =="(model") {
+				
+				   section[0]= GetSection(line, "at");
+					console.log("section model:" + section[0]  )
+	
+					if (section[0].length > 0) {
+						var subsection=new Array()
+						subsection[0]= GetSection(section, "xyz");
+						
+						console.log("At model:" + subsection[0]  )
+						At_modelX = Number(GetTokenDim(subsection, true));
+						At_modelY = Number(GetTokenDim(subsection, true));
+						At_modelZ = Number(GetTokenDim(subsection, true));
+			
+						console.log("loc at :  X:"+ At_modelX+" Y:"+ At_modelY+" Z:"+ At_modelZ )
+						}
+						
+	
+			   section[0]= GetSection(line, "scale");
+					console.log("section scale:" + section[0]  )
+	
+					if (section[0].length > 0) {
+						var subsection=new Array()
+						subsection[0]= GetSection(section, "xyz");
+						
+						console.log("At model:" + subsection[0]  )
+						Scale_modelX = Number(GetTokenDim(subsection, true));
+						Scale_modelY = Number(GetTokenDim(subsection, true));
+						Scale_modelZ = Number(GetTokenDim(subsection, true));
+			
+						console.log("Scale  :  X:"+ Scale_modelX+" Y:"+ Scale_modelY+" Z:"+ Scale_modelZ )
+						}
+	
+
+	
+				
+			
+				   section[0]= GetSection(line, "rotate");
+					console.log("section model:" + section[0]  )
+	
+					if (section[0].length > 0) {
+						var subsection=new Array()
+						subsection[0]= GetSection(section, "xyz");
+						
+						console.log("subsection model:" + subsection[0]  )
+						rotate_modelX = Number(GetTokenDim(subsection, true));
+						rotate_modelY = Number(GetTokenDim(subsection, true));
+						rotate_modelZ = Number(GetTokenDim(subsection, true));
+			
+						console.log("orientation:  RX:"+ rotate_modelX+" RY:"+ rotate_modelY+" RZ:"+ rotate_modelZ )
+						}
+			}
+			
+			
+			else if (token =="(fp_line") {
                 var x1=0, y1=0, x2=0, y2=0, penwidth=0;
                  var section = new Array(1)
 				 section[0]= GetSection(line, "start");
@@ -1456,6 +1530,18 @@ var sc2lastOgroZ=0
 
 function add_scenekicadreader(path,path1,scenep ) {
 
+var rotate_modelX=0
+var rotate_modelY=0
+var rotate_modelZ=0
+
+var At_modelX=0
+var At_modelY=0
+var At_modelZ=0
+
+var Scale_modelX=2.54
+var Scale_modelY=2.54
+var Scale_modelZ=2.54
+
 
 
 if ( path1 )
@@ -1468,9 +1554,9 @@ if ( path1 )
 			var tree1 = vrmlParser.parse(data);
 			var obj1b = new THREE.Scene();
 			vrmlConverter.render(tree1, obj1b);
-			obj1b.scale.set( 2.54,  2.54, 2.54 );
+	//		obj1b.scale.set( 2.54,  2.54, 2.54 );
 			//obj1.position.set( curx+ x,y,z );
-			obj1b.rotation.set( - Math.PI / 2,0,0 ) ;
+	//		obj1b.rotation.set( - Math.PI / 2,0,0 ) ;
 		
 			part2kicadreader(path, scenep, obj1b ) 		
 					
@@ -1586,9 +1672,22 @@ function part2kicadreader(path,sceneVi, obj1b ){
 		
 		
 	if (obj1b )
-		{obj1b.position.set(  mpx, 10,  mpz ) ;
+		{//obj1b.position.set(  mpx, 10,  mpz ) ;
+		
+		obj1b.rotation.set( 	- Math.PI / 2 + NormalizeAngle(rotate_modelX) ,		NormalizeAngle(rotate_modelY) ,	- NormalizeAngle(rotate_modelZ) ) ;
+
+	
+	
+		
+		obj1b.position.set( mpx + At_modelX*25.4, 10 + At_modelZ*25.4,  mpz-At_modelY*25.4 );
+	
+		obj1b.scale.set( Scale_modelX*2.54,  Scale_modelY*2.54, Scale_modelZ*2.54 );
+	
+	
 		sceneVi.add(obj1b);
-		}
+	
+	
+	}
 		
  //var bBox = new THREE.Box3().setFromObject(sceneVi) ;
 
@@ -1615,7 +1714,9 @@ function part2kicadreader(path,sceneVi, obj1b ){
 	gridHelper.rotation = new THREE.Euler(0, 0, 0);
 	sceneVi.add(gridHelper);
 	
-	obj1b.position.set(  mpx, 1,  mpz ) ;
+//	obj1b.position.set(  mpx, 1,  mpz ) ;
+	obj1b.position.set( mpx + At_modelX*25.4, 1 + At_modelZ*25.4,  mpz-At_modelY*25.4 );
+	
 	
 		var geometry = new THREE.BoxGeometry( (maxX-minX)+0 , 1.4 ,(maxZ-minZ)+0);
 //	var material = new THREE.MeshBasicMaterial( {color: 0x008000} );
