@@ -9,7 +9,7 @@ There are no lib here, only links.
 
 # todo
 
-  -fix bugs (mainly in the .kicad_mod parser)
+  -fix bugs (mainly in the .kicad_mod parser) 
 
   -generate a dynamic list from the official .pretty folder and from others sites (here it is static from modellist.js)
 
